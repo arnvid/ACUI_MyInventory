@@ -1,0 +1,8 @@
+<Bindings>
+	<Binding name="MYINVENTORYICON" description="Toggle MyInventory Icon Window" header="MYINVENTORYHEADER">
+		ToggleACUI_MyInventoryFrame();
+	</Binding>
+	<Binding name="MYINVENTORYCONFIG" description="MyInventory Config Window" header="MYINVENTORYCONFIGHEADER">
+		ACUI_MyInventoryOptionsFrame:Show();
+	</Binding>
+</Bindings>

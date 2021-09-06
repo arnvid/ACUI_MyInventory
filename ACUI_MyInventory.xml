@@ -1,0 +1,519 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ C:\Projects\WoW\Bin\Interface\FrameXML\UI.xsd">
+	<Script file="ACUI_localization.lua"/> 
+	<Script file="ACUI_localization.de.lua"/> 
+	<Script file="ACUI_MyInventory.lua"/> 
+  <Button name="ACUI_MyInventoryFrameItemButtonTemplate" inherits="ContainerFrameItemButtonTemplate" hidden="true" virtual="true">
+		<Scripts>
+			<OnLoad>
+				ACUI_MyInventoryFrameItemButton_OnLoad(self);
+			</OnLoad>
+  	</Scripts>
+  </Button>
+	<Button name="ACUI_MyInventoryFrameItemButtonTemplateOld" inherits="ItemButtonTemplate" hidden="true" virtual="true">	
+		<Frames>
+			<Cooldown name="$parentCooldown" inherits="CooldownFrameTemplate"/>
+		</Frames>
+		<Scripts>
+			<OnClick>
+				ACUI_MyInventoryFrameItemButton_OnClick(arg1);
+				 --SecureActionButton_OnClick(this, arg1);
+			</OnClick>
+			<OnLoad>
+				ACUI_MyInventoryFrameItemButton_OnLoad(self);
+				this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+				this:RegisterForDrag("LeftButton");
+			</OnLoad>
+			<OnEnter>
+				ACUI_MyInventoryFrameItemButton_OnEnter();
+			</OnEnter>
+			<OnLeave>
+				ACUI_MyInventoryFrameItemButton_OnLeave();
+			</OnLeave>
+			<OnHide>
+				if ( this.hasStackSplit and (this.hasStackSplit == 1) ) then
+					StackSplitFrame:Hide();
+				end
+			</OnHide>
+			<OnDragStart>
+				ACUI_MyInventoryFrameItemButton_OnClick("LeftButton", 1);
+			</OnDragStart>
+			<OnReceiveDrag>
+				ACUI_MyInventoryFrameItemButton_OnClick("LeftButton", 1);
+			</OnReceiveDrag>
+			<OnUpdate>
+				ACUI_MyInventoryFrameItemButton_OnUpdate(arg1);
+			</OnUpdate>
+	</Scripts>
+	</Button>
+	<CheckButton name="ACUI_MyInventoryBagButtonTemplate" inherits="BagSlotButtonTemplate" hidden="false" virtual="true">
+		<CheckedTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+		<HighlightTexture alphaMode="ADD" file="Interface\Buttons\CheckButtonHilight"/>
+		<Scripts>
+			<OnEnter>
+				ACUI_MyInventory_BagButton_OnEnter();
+			</OnEnter>
+			<OnLeave>
+				ACUI_MyInventory_BagButton_OnLeave();
+			</OnLeave>
+			<OnLoad>
+				this.isBag = 1;
+				local getBag = getglobal("Character"..strsub(this:GetName(),10));
+				this:SetID(getBag:GetID());
+				PaperDollItemSlotButton_OnLoad();
+				this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
+				this:RegisterForDrag("LeftButton");
+			</OnLoad>
+			<OnClick>
+				ACUI_MyInventory_BagButton_OnClick();
+			</OnClick>
+			<OnDragStart>
+				ACUI_MyInventory_BagButton_OnDragStart();
+			</OnDragStart>
+			<OnReceiveDrag>
+				ACUI_MyInventory_BagButton_OnReceiveDrag();
+			</OnReceiveDrag>
+		</Scripts>
+	</CheckButton>
+	<Frame name="ACUI_MyInventoryAnchorFrame" parent="UIParent" hidden="false" movable="true">
+		<Size><AbsDimension x="1" y="1"/></Size>
+		<Anchors>
+			<Anchor point="BOTTOMRIGHT" >
+				<Offset><AbsDimension x="0" y="50"/></Offset>
+			</Anchor>
+		</Anchors>
+	</Frame>
+	<Frame name="ACUI_MyInventoryFrame" parent="UIParent" toplevel="false" movable="true" resizable="true" enableMouse="true" hidden="true" framestrata="high">
+		<Anchors>
+			<Anchor point="BOTTOMRIGHT" relativeto="ACUI_MyInventoryAnchorFrame" relativePoint="BOTTOMRIGHT" >
+				<Offset><AbsDimension x="0" y="0"/></Offset>
+			</Anchor>
+		</Anchors>
+		<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background" edgeFile="Interface\Tooltips\UI-Tooltip-Border" tile="true">
+			<BackgroundInsets><AbsInset left="5" right="5" top="5" bottom="5"/></BackgroundInsets>
+			<TileSize><AbsValue val="16"/></TileSize>
+			<EdgeSize><AbsValue val="16"/></EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="BACKGROUND">
+				<Texture name="$parentPortrait" hidden="true" file="Interface\AddOns\ACUI_MyInventory\Skin\Backpack" > <!--   -->
+					<Size><AbsDimension x="58" y="58"/></Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset><AbsDimension x="-7" y="2"/></Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+
+				<Texture name="$parentTextureTopLeft" file="Interface\AddOns\ACUI_MyInventory\Skin\TopLeft" hidden="true">
+					<Size><AbsDimension x="128" y="128"/></Size>
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset><AbsDimension x="-67" y="60"/></Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentTextureTopRight" file="Interface\AddOns\ACUI_MyInventory\Skin\TopRight" hidden="true">
+					<Size><AbsDimension x="64" y="128"/></Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT"> 
+							<Offset><AbsDimension x="36" y="60"/></Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentTextureTopCenter" file="Interface\AddOns\ACUI_MyInventory\Skin\TopCenter" hidden="true">
+					<Size><AbsDimension x="128" y="128"/></Size>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parentTextureTopLeft" relativePoint="BOTTOMRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentTextureTopRight" relativePoint="BOTTOMLEFT"/>
+					</Anchors>
+				</Texture>
+
+				<Texture name="$parentTextureBottomLeft" file="Interface\AddOns\ACUI_MyInventory\Skin\BottomLeft" hidden="true">
+					<Size><AbsDimension x="128" y="128"/></Size>
+					<Anchors>
+						<Anchor point="BOTTOMLEFT">
+							<Offset><AbsDimension x="-67" y="-60"/></Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentTextureBottomRight" file="Interface\AddOns\ACUI_MyInventory\Skin\BottomRight" hidden="true">
+					<Size><AbsDimension x="64" y="128"/></Size>
+					<Anchors>
+						<Anchor point="BOTTOMRIGHT"> 
+							<Offset><AbsDimension x="36" y="-60"/></Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentTextureBottomCenter" file="Interface\AddOns\ACUI_MyInventory\Skin\BottomCenter" hidden="true">
+					<Size><AbsDimension x="128" y="128"/></Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTextureBottomLeft" relativePoint="TOPRIGHT"/>
+						<Anchor point="TOPRIGHT" relativeTo="$parentTextureBottomRight" relativePoint="TOPLEFT"/>
+					</Anchors>
+				</Texture>
+
+				<Texture name="$parentTextureLeft" file="Interface\AddOns\ACUI_MyInventory\Skin\Left" hidden="true">
+					<Size><AbsDimension x="64" y="128"/></Size>
+					<Anchors>
+						<Anchor point="TOPRIGHT" relativeTo="$parentTextureTopLeft" relativePoint="BOTTOMRIGHT"/>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentTextureBottomLeft" relativePoint="TOPRIGHT"/>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentTextureRight" file="Interface\AddOns\ACUI_MyInventory\Skin\Right" hidden="true">
+					<Size><AbsDimension x="64" y="128"/></Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTextureTopRight" relativePoint="BOTTOMLEFT"/>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parentTextureBottomRight" relativePoint="TOPLEFT"/>
+					</Anchors>
+				</Texture>
+				<Texture name="$parentTextureCenter" file="Interface\AddOns\ACUI_MyInventory\Skin\Center" hidden="true">
+					<Size><AbsDimension x="128" y="128"/></Size>
+					<Anchors>
+						<Anchor point="TOPLEFT" relativeTo="$parentTextureTopCenter" relativePoint="BOTTOMLEFT"/>
+						<Anchor point="TOPRIGHT" relativeTo="$parentTextureTopCenter" relativePoint="BOTTOMRIGHT"/>
+						<Anchor point="BOTTOMLEFT" relativeTo="$parentTextureBottomCenter" relativePoint="TOPLEFT"/>
+						<Anchor point="BOTTOMRIGHT" relativeTo="$parentTextureBottomCenter" relativePoint="TOPRIGHT"/>
+					</Anchors>
+				</Texture>
+			</Layer>
+			<Layer level="ARTWORK">
+				<FontString name="$parentName" inherits="GameFontNormal" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="TOPLEFT">
+							<Offset><AbsDimension x="7" y="-10"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+				<FontString name="$parentSlots" inherits="GameFontNormal" justifyH="LEFT">
+					<Anchors>
+						<Anchor point="BOTTOMLEFT">
+							<Offset><AbsDimension x="7" y="10"/></Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="$parentMoneyFrame" inherits="SmallMoneyFrameTemplate" hidden="true">
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT">
+						<Offset><AbsDimension x="-5" y="8"/></Offset>
+					</Anchor>
+				</Anchors>
+			</Frame>
+			<Button name="$parentItem1" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem2" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem3" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem4" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem5" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem6" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem7" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem8" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem9" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem10" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem11" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem12" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem13" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem14" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem15" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem16" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem17" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem18" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem19" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem20" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem21" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem22" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem23" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem24" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem25" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem26" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem27" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem28" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem29" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem30" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem31" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem32" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem33" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem34" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem35" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem36" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem37" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem38" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem39" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem40" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem41" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem42" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem43" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem44" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem45" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem46" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem47" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem48" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem49" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem50" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem51" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem52" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem53" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem54" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem55" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem56" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem57" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem58" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem59" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem60" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem61" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem62" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem63" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem64" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem65" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem66" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem67" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem68" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem69" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem70" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem71" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem72" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem73" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem74" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem75" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem76" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem77" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem78" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem79" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem80" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem81" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem82" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem83" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem84" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem85" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem86" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem87" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem88" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem89" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem90" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem91" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem92" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem93" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem94" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem95" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem96" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem97" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem98" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem99" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem100" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem101" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem102" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem103" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem104" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem105" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem106" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem107" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem108" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem109" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem110" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem111" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem112" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem113" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem114" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem115" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem116" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem117" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem118" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem119" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem120" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem121" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem122" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem123" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem124" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem125" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem126" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem127" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem128" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem129" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem130" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem131" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem132" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem132" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem133" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem134" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem135" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem136" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem137" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem138" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem139" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem140" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem141" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem142" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem143" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem144" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem145" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem146" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem147" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem148" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem149" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem150" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem151" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem152" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem153" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem154" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem155" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem156" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem157" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem158" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem159" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem160" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem161" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem162" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem163" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+			<Button name="$parentItem164" inherits="ACUI_MyInventoryFrameItemButtonTemplate"/>
+      <Frame name="$parentBag0" hidden="false" id="0">
+        <Size>
+          <AbsDimension x="0" y="0"/>
+        </Size>
+      </Frame>
+      <Frame name="$parentBag1" hidden="false" id="1">
+        <Size>
+          <AbsDimension x="0" y="0"/>
+        </Size>
+      </Frame>
+      <Frame name="$parentBag2" hidden="false" id="2">
+        <Size>
+          <AbsDimension x="0" y="0"/>
+        </Size>
+      </Frame>
+      <Frame name="$parentBag3" hidden="false" id="3">
+        <Size>
+          <AbsDimension x="0" y="0"/>
+        </Size>
+      </Frame>
+      <Frame name="$parentBag4" hidden="false" id="4">
+        <Size>
+          <AbsDimension x="0" y="0"/>
+        </Size>
+      </Frame>			
+			<Frame name="ACUI_MyInventoryBagButtonsBar" hidden="false">
+				<Size><AbsDimension x="190" y="37"/></Size>
+				<Anchors>
+					<Anchor point="TOP"><Offset><AbsDimension x="0" y="-28"/></Offset></Anchor>
+				</Anchors>
+				<Frames>
+					<CheckButton name="ACUI_MyInventoryBackpackButton" inherits="ItemButtonTemplate" id="0" hidden="false">
+						<CheckedTexture alphaMode="ADD" file="Interface\Buttons\ButtonHilight-Square"/>
+						<HighlightTexture alphaMode="ADD" file="Interface\Buttons\CheckButtonHilight"/>
+						<Size><AbsDimension x="37" y="37"/></Size>
+						<Anchors>
+							<Anchor point="LEFT" relativeto="ACUI_MyInventoryBagButtonsBar" relativepoint="LEFT"/>
+						</Anchors>
+						<Scripts>
+							<OnLoad>
+								ACUI_MyInventoryBackpackButtonIconTexture:SetTexture("Interface\\Buttons\\Button-Backpack-Up");
+							</OnLoad>
+							<OnClick>
+								ACUI_MyInventory_Backpack_OnClick();
+							</OnClick>
+							<OnReceiveDrag>
+								PutItemInBackpack();
+							</OnReceiveDrag>
+							<OnEnter>
+								ACUI_MyInventory_Backpack_OnEnter();
+							</OnEnter>
+							<OnLeave>
+								ACUI_MyInventory_Backpack_OnLeave();
+							</OnLeave>
+						</Scripts>
+					</CheckButton>
+					<CheckButton name="MyInventoBag0Slot" inherits="ACUI_MyInventoryBagButtonTemplate">
+						<Anchors>
+							<Anchor point="LEFT" relativeto="ACUI_MyInventoryBackpackButton" relativepoint="RIGHT"/>
+						</Anchors>
+					</CheckButton>
+					<CheckButton name="MyInventoBag1Slot" inherits="ACUI_MyInventoryBagButtonTemplate">
+						<Anchors>
+							<Anchor point="LEFT" relativeto="MyInventoBag0Slot" relativepoint="RIGHT">
+								<Offset><AbsDimension x="2" y="0"/></Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton>
+					<CheckButton name="MyInventoBag2Slot" inherits="ACUI_MyInventoryBagButtonTemplate">
+						<Anchors>
+							<Anchor point="LEFT" relativeto="MyInventoBag1Slot" relativepoint="RIGHT">
+								<Offset><AbsDimension x="2" y="0"/></Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton>
+					<CheckButton name="MyInventoBag3Slot" inherits="ACUI_MyInventoryBagButtonTemplate">
+						<Anchors>
+							<Anchor point="LEFT" relativeto="MyInventoBag2Slot" relativepoint="RIGHT">
+								<Offset><AbsDimension x="2" y="0"/></Offset>
+							</Anchor>
+						</Anchors>
+					</CheckButton>
+				</Frames>
+			</Frame>
+			<Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+				<Anchors>
+					<Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="-1" y="-1"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						this:GetParent():Hide();
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentLockButton" inherits="UIPanelCloseButton">
+				<NormalTexture name="MILockNormalTexture" file="Interface\AddOns\ACUI_MyInventory\Skin\LockButton-Unlocked-Up"/>
+				<PushedTexture name="MILockPushedTexture" file="Interface\AddOns\ACUI_MyInventory\Skin\LockButton-Locked-Down"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="$parentCloseButton" relativePoint="LEFT">
+						<Offset><Absdimension x="10" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						ACUI_MyInventory_Toggle_Option("Lock");
+						ACUI_MyInventoryFrame_UpdateLook(ACUI_MyInventory_GetBagsTotalSlots());
+					</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="$parentHideBagsButton" inherits="UIPanelCloseButton">
+				<NormalTexture name="MIHideBagsNormalTexture" file="Interface\AddOns\ACUI_MyInventory\Skin\MinimizeButton-Up"/>
+				<PushedTexture name="MIHideBagsPushedTexture" file="Interface\AddOns\ACUI_MyInventory\Skin\MinimizeButton-Down"/>
+				<Anchors>
+					<Anchor point="RIGHT" relativeTo="$parentLockButton" relativePoint="LEFT">
+						<Offset><Absdimension x="15" y="0"/></Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>
+						ACUI_MyInventory_Toggle_Option("BagView");
+						ACUI_MyInventoryFrame_UpdateLook(ACUI_MyInventory_GetBagsTotalSlots());
+					</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnEvent>
+				ACUI_MyInventoryFrame_OnEvent(event);
+			</OnEvent>
+			<OnLoad>
+				ACUI_MyInventoryFrame_OnLoad();
+			</OnLoad>
+			<OnHide>
+				ACUI_MyInventoryFrame_OnHide();
+			</OnHide>
+			<OnShow>
+				ACUI_MyInventoryFrame_OnShow();
+			</OnShow>
+			<OnMouseDown>
+				ACUI_MyInventoryFrame_OnMouseDown(arg1);
+			</OnMouseDown>
+			<OnMouseUp>
+				ACUI_MyInventoryFrame_OnMouseUp(arg1);
+			</OnMouseUp>
+		</Scripts>
+	</Frame>
+</Ui>

@@ -1,0 +1,15 @@
+## Interface: 30000
+## Title: ACUI MyInventory
+## Author: ievil
+## Version: 3.0.2.1
+## Notes: Standalone, configurable inventory viewer.
+## X-Date: October 18, 2008
+## X-Email: acuiwow@gmail.com
+## X-Website: http://www.leftoverexiles.com/forum/
+## X-Category: MYADDONS_CATEGORY_INVENTORY
+## X-Help: ACUIMYINVENTORY_HELP
+## X-OptionsFrame: 
+## OptionalDeps: myAddOns, ItemsMatrix, LootLink
+## SavedVariables: ACUI_MyInventoryProfile
+ACUI_MyInventory.xml
+ACUI_MyInventory_Options.xml
