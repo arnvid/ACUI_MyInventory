@@ -2,7 +2,7 @@
 -- File: ACUI_MyInventory.lua
 --
 -- Purpose: Functions for ACUI_MyInventory WoW Window.
--- Version 3.0.2.1 for WOW 30000 and TBC/pre-WOTLK
+-- Version 3.0.2.2 for WOW 30000 and TBC/pre-WOTLK
 -- TOC - bumped
 -- Fixed error with pressing BagButtons
 -- Fixed error from FrameXML in Options.xml
@@ -741,7 +741,7 @@ function ACUI_MyInventoryFrame_OnMouseUp(arg1)
 end
 -- }}}
 -- Item Button Events {{{
-function ACUI_MyInventoryFrameItemButton_OnLoad(self)
+function ACUI_MyInventoryFrameItemButton_OnLoad()
 	this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 	this:RegisterForDrag("LeftButton");
  	this:RegisterEvent("CURSOR_UPDATE");

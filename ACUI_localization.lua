@@ -1,7 +1,7 @@
 -- Version : English - Ramble 
 -- Translation : 
 --   DE: Iruwen
-MYINVENTORY_MYADDON_VERSION = "3.0.2.0 (30000)";
+MYINVENTORY_MYADDON_VERSION = "3.0.2.3 (30000)";
 -- MYADDONS
 MYINVENTORY_MYADDON_NAME = "ACUI MyInventory";
 MYINVENTORY_MYADDON_DESCRIPTION = "A simple, compact all in one inventory window.";

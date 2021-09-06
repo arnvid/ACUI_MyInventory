@@ -5,7 +5,7 @@
   <Button name="ACUI_MyInventoryFrameItemButtonTemplate" inherits="ContainerFrameItemButtonTemplate" hidden="true" virtual="true">
 		<Scripts>
 			<OnLoad>
-				ACUI_MyInventoryFrameItemButton_OnLoad(self);
+				ACUI_MyInventoryFrameItemButton_OnLoad();
 			</OnLoad>
   	</Scripts>
   </Button>
@@ -19,7 +19,7 @@
 				 --SecureActionButton_OnClick(this, arg1);
 			</OnClick>
 			<OnLoad>
-				ACUI_MyInventoryFrameItemButton_OnLoad(self);
+				ACUI_MyInventoryFrameItemButton_OnLoad();
 				this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 				this:RegisterForDrag("LeftButton");
 			</OnLoad>
@@ -59,7 +59,7 @@
 				this.isBag = 1;
 				local getBag = getglobal("Character"..strsub(this:GetName(),10));
 				this:SetID(getBag:GetID());
-				PaperDollItemSlotButton_OnLoad();
+				-- PaperDollItemSlotButton_OnLoad();
 				this:RegisterForClicks("LeftButtonUp", "RightButtonUp");
 				this:RegisterForDrag("LeftButton");
 			</OnLoad>

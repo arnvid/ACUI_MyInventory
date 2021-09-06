@@ -1,9 +1,9 @@
 ## Interface: 30000
 ## Title: ACUI MyInventory
 ## Author: ievil
-## Version: 3.0.2.1
+## Version: 3.0.2.3
 ## Notes: Standalone, configurable inventory viewer.
-## X-Date: October 18, 2008
+## X-Date: October 20, 2008
 ## X-Email: acuiwow@gmail.com
 ## X-Website: http://www.leftoverexiles.com/forum/
 ## X-Category: MYADDONS_CATEGORY_INVENTORY

@@ -2,7 +2,7 @@
 	<Script file="ACUI_localization.lua"/> 
 	<Script file="ACUI_localization.de.lua"/> 
 	<Script file="ACUI_MyInventory_Options.lua"/> 
-	<CheckButton name="MI_CheckTemplate" inherits="OptionsBaseCheckButtonTemplate" virtual="true">
+	<CheckButton name="MI_CheckTemplate" inherits="UICheckButtonTemplate" virtual="true">
 		<HitRectInsets><AbsInset left="0" right="-100" top="0" bottom="0"/></HitRectInsets>
 		<Scripts>
 			<OnLoad>
