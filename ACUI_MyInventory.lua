@@ -2,6 +2,9 @@
 -- File: ACUI_MyInventory.lua
 --
 -- Purpose: Functions for ACUI_MyInventory WoW Window.
+-- Version 3.1.0.1 for WOW/WOTLK 3.1
+-- TOC - bumped
+-- 
 -- Version 3.0.2.2 for WOW 30000 and TBC/pre-WOTLK
 -- TOC - bumped
 -- Fixed error with pressing BagButtons
